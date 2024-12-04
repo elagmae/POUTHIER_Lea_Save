@@ -3,7 +3,7 @@ using System.Xml;
 using TMPro;
 using UnityEngine;
 
-public class SaveHandler : MonoBehaviour
+public class XmlSaveHandler : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI _timeUI;
@@ -12,7 +12,7 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _nameUI;
 
-    private float _time;
+    public float _time;
     private float _previousTime;
 
     private int _buttonClicked;
@@ -23,11 +23,11 @@ public class SaveHandler : MonoBehaviour
     private void Awake()
     {
         XmlDocument xmlDocument = new();
-        if (!System.IO.File.Exists(Application.dataPath + "/SaveFile.xml"))
+        if (!System.IO.File.Exists(Application.dataPath + "/SaveFileXml.xml"))
         {
             return;
         }
-        xmlDocument.LoadXml(System.IO.File.ReadAllText(Application.dataPath + "/SaveFile.xml"));
+        xmlDocument.LoadXml(System.IO.File.ReadAllText(Application.dataPath + "/SaveFileXml.xml"));
 
         string key;
         string value;
@@ -70,7 +70,7 @@ public class SaveHandler : MonoBehaviour
             Indent = true
         };
 
-        XmlWriter xmlWriter = XmlWriter.Create(Application.dataPath + "/SaveFile.xml", xmlWriterSettings);
+        XmlWriter xmlWriter = XmlWriter.Create(Application.dataPath + "/SaveFileXml.xml", xmlWriterSettings);
 
         _time = _previousTime + Time.realtimeSinceStartup;
         _buttonClicked++;
