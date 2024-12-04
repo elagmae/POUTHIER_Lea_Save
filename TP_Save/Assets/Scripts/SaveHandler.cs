@@ -12,8 +12,9 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _nameUI;
 
-    private float _previousTime;
     private float _time;
+    private float _previousTime;
+
     private int _buttonClicked;
     private string _name = "Léa";
 
@@ -22,19 +23,21 @@ public class SaveHandler : MonoBehaviour
     private void Awake()
     {
         XmlDocument xmlDocument = new();
-        if (!System.IO.File.Exists("Assets /" + "SaveFile.xml"))
+        if (!System.IO.File.Exists(Application.dataPath + "/SaveFile.xml"))
         {
             return;
         }
-        xmlDocument.LoadXml(System.IO.File.ReadAllText("Assets /" + "SaveFile.xml"));
+        xmlDocument.LoadXml(System.IO.File.ReadAllText(Application.dataPath + "/SaveFile.xml"));
 
         string key;
         string value;
 
+        // Assigner chaque variable à son omologue sauvegardé
         foreach (XmlNode node in xmlDocument.ChildNodes[1])
         {
             key = node.Name;
             value = node.InnerText;
+
             switch (key)
             {
                 case "Nom":
@@ -60,13 +63,14 @@ public class SaveHandler : MonoBehaviour
 
     public void XmlMethod()
     {
+        // Actualiser les variables
         XmlWriterSettings xmlWriterSettings = new()
         {
             NewLineOnAttributes = true,
             Indent = true
         };
 
-        XmlWriter xmlWriter = XmlWriter.Create("Assets /" + "SaveFile.xml", xmlWriterSettings);
+        XmlWriter xmlWriter = XmlWriter.Create(Application.dataPath + "/SaveFile.xml", xmlWriterSettings);
 
         _time = _previousTime + Time.realtimeSinceStartup;
         _buttonClicked++;
@@ -82,6 +86,7 @@ public class SaveHandler : MonoBehaviour
 
     public void WriteInXml(XmlWriter writer, string name, float time, int buttonClicked)
     {
+        // Ecrire dans le fichier de sauvegarde.
         writer.WriteStartDocument();
         writer.WriteStartElement("Save");
 
